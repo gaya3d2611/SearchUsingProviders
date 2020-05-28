@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,155 +18,174 @@ class _DashboardState extends State<Dashboard> {
     MyModel().Autofill(search).then((response) async{
       var dataa= response;
       dataa= dataa.body;
-      //print(dataa);
       list= await json.decode(dataa);
       setState(() {
         list= json.decode(dataa);
         data= list["results"];
+
       });
     }).catchError((onError)=> print("nooooooooooooooooooooooooooo"));
   }
   initState(){
-    super.initState();
     _autocomplete("avengers");
+    super.initState();
   }
-
   var search;
+
   @override
   Widget build(BuildContext context) {
+   SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return ChangeNotifierProvider<MyModel>(
       create: (context)=>MyModel(),
       child: Scaffold(
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: Consumer<MyModel>(
-                  builder: (context, myModel, child){
-                    return Container(
-                      height: 50,
-                      child: TextFormField(onFieldSubmitted: (value) => {
-                        (value.isEmpty)
-                            ? print(
-                            "Empty***************************************")
-                            : _autocomplete(SearchText.text),
-                        //print("Something")
-                      },
-                          textInputAction: TextInputAction.go,
-                          controller: SearchText,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                            ),
-                            prefixIcon: Icon(Icons.search),
-                            hintText: 'Search',
-                            hintStyle: TextStyle(
-                                color: Colors.grey, fontSize: 14.0
-                            )
-                        ),
-                        onChanged: (value){
-                          print(value);
-                            search=value;
-                          myModel.Autofill(search);
-                        print("****************************");}
-                      ),
-                    );
-                  }
-                ),
-              ),
-              Divider(
-                thickness: 0,
-                  color: Colors.white,
-              ),
-              Expanded(
-                  child: ListView.builder(
-                    itemCount: list.length,
-                    itemBuilder: (context, index){
-                      var gener;
-                      (){};
-                      return Padding(
-                          padding: EdgeInsets.all(30),
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: <Widget>[
-                          Container(
-                            height:140,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(.1),
-                                  offset: Offset(0,0),
-                                  blurRadius: 10,
-                                  spreadRadius: 3
+        body: SafeArea(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Consumer<MyModel>(
+                      builder: (context, myModel, child){
+                        return Container(
+                          height: 50,
+                          child: TextFormField(onFieldSubmitted: (value) => {
+                            (value.isEmpty)
+                                ? print("empty")
+                                : _autocomplete(SearchText.text),
+
+
+                          },
+                              textInputAction: TextInputAction.go,
+                              controller: SearchText,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                ),
+                                prefixIcon: Icon(Icons.search),
+                                hintText: 'Search',
+                                hintStyle: TextStyle(
+                                    color: Colors.grey, fontSize: 14.0
                                 )
-                              ]
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Flexible(child: Text(list["results"][index]["title"].toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold
-                                ),
-                                ),
-                                ),
-                                Divider(),
-                                Flexible(
-                                  child: Text("Year: " + list["results"][index]["description"].toString(), style: TextStyle(
-                                    color: Colors.blue, fontWeight: FontWeight.bold
-                                  ),
-                                  )
-                                )
-                              ],
-                            ),
+                            onChanged: (value){
+                              print(value);
+                                search=value;
+                              myModel.Autofill(search);
+                            }
                           ),
-                          Row(
+                        );
+                      }
+                    ),
+                  ),
+                  Divider(
+                    thickness: 0,
+                      color: Colors.white,
+                  ),
+
+                  Expanded(
+                      child: ListView.builder(
+                        itemCount: list["results"].length,
+                        itemBuilder: (context, index){
+                          return Padding(
+                              padding: EdgeInsets.all(8),
+                          child: Stack(
+                            alignment: Alignment.bottomCenter,
                             children: <Widget>[
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  Stack(
-                                    alignment: Alignment.center,
-                                    children: <Widget>[
-                                      Center(
-                                        child: CupertinoActivityIndicator(),
-                                      ),
-                                      Container(
-                                        height: 150,
-                                          width: 100,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(0.5),
-                                              offset: Offset(0, 0),
-                                              blurRadius: 10,
-                                              spreadRadius: 3,
-                                            )
-                                          ]
+                              Container(
+                                height:140,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(.1),
+                                      offset: Offset(0,0),
+                                      blurRadius: 10,
+                                      spreadRadius: 3
+                                    )
+                                  ]
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 120
+                                    ),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Flexible(child: Text(list["results"][index]["title"].toString(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,
                                         ),
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          //maxLines: 1,
+                                        ),
+                                        ),
+                                        Divider(),
+                                        Flexible(
+                                          child: Text("Year: " + list["results"][index]["description"].toString(), style: TextStyle(
+                                            color: Colors.blue, fontWeight: FontWeight.bold
+                                          ),
+                                          )
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      Stack(
+                                        alignment: Alignment.center,
+                                        children: <Widget>[
+                                          Center(
+                                            child: CupertinoActivityIndicator(),
+                                          ),
+                                          Container(
+                                            height: 150,
+                                              width: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey.withOpacity(0.5),
+                                                  offset: Offset(0, 0),
+                                                  blurRadius: 10,
+                                                  spreadRadius: 3,
+                                                )
+                                              ]
+                                            ),
+                                          ),
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: Image.network(list["results"][index]["image"].toString(), width: 100,height: 150,)
+                                          ),
+                                        ],
                                       ),
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.network(list["results"][index]["image"].toString(), width: 100,height: 150,)
-                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      )
                                     ],
                                   )
                                 ],
                               )
                             ],
                           )
-                        ],
-                      )
-                      );
-                    }
-                    )
-              )
-            ],
+                          );
+                        }
+                        )
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -176,9 +195,7 @@ class _DashboardState extends State<Dashboard> {
 class MyModel with ChangeNotifier{
 var res;
 Future Autofill(search){
-  // print(search + "sahchschahfge");
   var url="https://imdb-api.com/en/API/SearchMovie/k_3CSij27E/"+ search.toString();
-  // print(http.get(url));
   return http.get(url);
 }
 }
