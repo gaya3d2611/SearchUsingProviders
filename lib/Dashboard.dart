@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:screen_utils/screen_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -123,11 +123,11 @@ class _DashboardState extends State<Dashboard> {
                                             children: <Widget>[
                                               Flexible(child:
                                               Container(
-                                                width: 199,
+                                                width: 140,
                                                 //height:50,
                                                 child:
                                               Text(data[index]["original_title"].toString(),
-                                                style: TextStyle(fontSize: 17.5, fontWeight: FontWeight.bold,
+                                                style: TextStyle(fontSize: ScreenUtil().setSp(50), fontWeight: FontWeight.bold,
                                               ),
                                                 textAlign: TextAlign.center,
                                                 softWrap: true,
@@ -161,11 +161,11 @@ class _DashboardState extends State<Dashboard> {
                                                           color: Colors.blue[600],
                                                           fontWeight:
                                                           FontWeight.bold,
-                                                          fontSize: 22
+                                                          fontSize: ScreenUtil().setSp(55)
                                                         ),
                                                       ),
                                                       SizedBox(
-                                                        width: 19,
+                                                        width: 10,
                                                       ),
                                                       SmoothStarRating(
                                                           allowHalfRating: false,
@@ -174,7 +174,7 @@ class _DashboardState extends State<Dashboard> {
                                                           rating: data[index][
                                                           "vote_average"] /
                                                               2,
-                                                          size: 22.0,
+                                                          size: ScreenUtil().setSp(55),
                                                           isReadOnly: true,
                                                           color:
                                                           Color(0xffFFD700),
