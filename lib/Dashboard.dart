@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:screen_utils/screen_utils.dart';
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -12,6 +13,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   TextEditingController SearchText= new TextEditingController();
+
   List<dynamic> data;
   Map<String, dynamic> list;
   var movies = new List<Movie>();
@@ -35,6 +37,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     return ChangeNotifierProvider<MyModel>(
       create: (context)=>MyModel(),
@@ -120,7 +123,7 @@ class _DashboardState extends State<Dashboard> {
                                             children: <Widget>[
                                               Flexible(child:
                                               Container(
-                                                width: 280,
+                                                width: 199,
                                                 //height:50,
                                                 child:
                                               Text(data[index]["original_title"].toString(),
@@ -135,7 +138,7 @@ class _DashboardState extends State<Dashboard> {
                                               ),
                                               Divider(),
                                               Flexible(
-                                                  child: Text("Genere: Action", style: TextStyle(
+                                                  child: Text("Genre: Action", style: TextStyle(
                                                       color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 10
                                                   ),
                                                   )
